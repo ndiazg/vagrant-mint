@@ -3,14 +3,93 @@
   become: true
   become_user: root
   tasks:
+  - name: No password sudo
+    lineinfile: 
+      dest: /etc/sudoers
+      regexp: '^%sudo'
+      line: '%sudo   ALL=(ALL) NOPASSWD: ALL'
+  - name: Install misc dev tools
+    apt: name={{ item }} state=present
+    with_items:
+      - curl
+      - git
+      - rsync
+      - gcc
+      - g++
+      - make
+      - bzip2
+      - unzip
+      - libssl-dev
+      - vim
+      - lynx
+      - build-essential
+      - libxml2-dev
+      - libbz2-dev
+      - telnet
+      - imagemagick
+      - samba
   - name: Install apache
     apt: name=apache2 state=latest
+  - name: Configure apache user
+    user:
+      name: www-data
+      shell: /bin/bash
+      password: '$6$DoDsDeMSxK4L$d5Tk6NX1N5kxmmQn73Zceg1lQQ7JUKeueHJN3kRVE2zTWD5f8mQH4jSnK/dNR24svbIXQLC66MWgPBL7.5gJ..'
+      groups: www-data,sudo
+      append: yes
+  - name: Apache home
+    file:
+      path: /var/www
+      state: directory
+      owner: www-data
+      group: www-data
+  - name: Apache desktop
+    file:
+      path: /var/www/Desktop
+      state: directory
+      owner: www-data
+      group: www-data
   - name: Ensure apache is running
     service: name=apache2 state=started enabled=yes
+  - name: Install php
+    apt: name={{ item }} state=latest
+    with_items:
+      - php
+      - php-mcrypt
+      - php-curl
+      - php-mysql
+      - php-cli
+      - php-memcache
+      - php-memcached
+      - php-db
+      - php-gd
+      - php-imap
+      - php-dev
+      - phpunit
+      - php-pear
+      - php-xdebug
+      - php-xmlrpc
+  - name: Install composer
+    shell: '/usr/bin/curl -sS https://getcomposer.org/installer | HOME=/var/www php -- --install-dir=/usr/bin --filename=composer'
+    args:
+      creates: /usr/bin/composer
   - name: Install mysql
     apt: name=mysql-server state=latest
   - name: Ensure mysql is running
     service: name=mysql state=started enabled=yes
+  - name: Install php storm IDE
+    become_user: www-data
+    shell: '/usr/bin/wget https://download.jetbrains.com/webide/PhpStorm-2016.3.1.tar.gz && tar -zxf PhpStorm-2016.3.1.tar.gz && rm *.tar.gz && mv PhpStorm* PhpStorm'
+    args:
+      chdir: /tmp
+      creates: /tmp/PhpStorm
+  - name: PhpStorm shortcut
+    copy:
+      src: files/phpstorm.desktop
+      dest: /var/www/Desktop/phpstorm.desktop
+      owner: www-data
+      group: www-data
+      mode: 0755
   handlers:
   - name: Restart apache
     service: name=apache2 state=restarted

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Comment=
+Terminal=false
+Name=phpstorm
+Exec=/tmp/PhpStorm/bin/phpstorm.sh
+Type=Application

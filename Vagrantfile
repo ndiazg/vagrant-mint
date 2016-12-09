@@ -84,8 +84,8 @@ Vagrant.configure(2) do |config|
   config.persistent_storage.mountpoint = '/var/www'
   config.persistent_storage.volgroupname = 'html'
 
-  config.vm.network "public_network"
-#  config.vm.network "public_network", ip: "192.168.0.99"
+#  config.vm.network "public_network"
+  config.vm.network "public_network", ip: "10.0.18.100"
   
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
