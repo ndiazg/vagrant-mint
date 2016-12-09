@@ -29,8 +29,8 @@ Provisioning can take a few minutes, when complete write down the ip address sho
 Samba is also included to allow use of your favorite Windows IDE
 	On Windows Explorer right click on 'This PC'
 > Map network drive -> \\xx.xx.xx.xx\www-data
-Where xx.xx.xx.xx = your.vagrant.ip
-User/pwd: www-data/www-data
-The xx.xx.xx.xx ip should be on screen once 'vagrant up' has completed. Look under ```enp0s8 -> inet addr```
+> Where xx.xx.xx.xx = your.vagrant.ip
+> User/pwd: www-data/www-data
+> The xx.xx.xx.xx ip should be on screen once 'vagrant up' has completed. Look under ```enp0s8 -> inet addr```
 
 Based on the **artem-sidorenko/mint-18.0-cinnamon** vagrant image.
