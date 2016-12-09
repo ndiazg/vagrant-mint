@@ -29,6 +29,8 @@
       - imagemagick
       - samba
       - exim4-base
+      - ruby
+      - ruby-dev
   - name: Install apache
     apt: name=apache2 state=latest
   - name: Configure apache user
@@ -133,6 +135,20 @@
       owner: root
       group: root
       mode: 0644
+  - name: Node source
+    shell: '/usr/bin/curl -sL https://deb.nodesource.com/setup_6.x | /bin/bash -'
+    args:
+      creates: /etc/apt/sources.list.d/nodesource.list
+  - name: Install node
+    apt: name=nodejs state=latest
+  - name: Node modules
+    shell: '/usr/bin/npm install --global npm gulp gulp-cli bower grunt grunt-cli yo generator-angular'
+    args:
+      creates: /usr/bin/grunt
+  - name: Install sass and compass
+    shell: '/usr/bin/gem install sass --version 3.4.20 && /usr/bin/gem install compass'
+    args:
+      creates: /usr/local/bin/sass
   handlers:
   - name: Restart apache
     service: name=apache2 state=restarted
