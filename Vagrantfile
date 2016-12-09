@@ -77,11 +77,11 @@ Vagrant.configure(2) do |config|
   end
   config.persistent_storage.enabled = true
   config.persistent_storage.use_lvm = false
-  config.persistent_storage.location = "html.vdi"
+  config.persistent_storage.location = "www.vdi"
   config.persistent_storage.size = 50000
   config.persistent_storage.mountname = 'html'
   config.persistent_storage.filesystem = 'ext4'
-  config.persistent_storage.mountpoint = '/var/www/html'
+  config.persistent_storage.mountpoint = '/var/www'
   config.persistent_storage.volgroupname = 'html'
 
   config.vm.network "public_network"
