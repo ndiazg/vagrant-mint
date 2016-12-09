@@ -12,7 +12,7 @@ Mint cinnamon + LAMP Ansible playbook
 ```
 
 ### Accessing the box:
-You may find convenient logging in and developing as the apache user, for several reasons:
+A few reasons why you may find convenient logging in and developing as www-data (apache user):
 * The /var/www folder can be mapped as a Windows network drive (see below for instructions)
 * The /var/www folder persists even after vagrant destroy (persistent storage plugin)
 * Avoid ownership and permission conflicts with apache

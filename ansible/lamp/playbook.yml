@@ -28,6 +28,7 @@
       - telnet
       - imagemagick
       - samba
+      - exim4-base
   - name: Install apache
     apt: name=apache2 state=latest
   - name: Configure apache user
@@ -90,6 +91,29 @@
       owner: www-data
       group: www-data
       mode: 0755
+  - name: Exim config
+    lineinfile: 
+      dest: /etc/exim4/update-exim4.conf.conf
+      regexp: "^dc_eximconfig_configtype='local'"
+      line: "dc_eximconfig_configtype='internet'"
+  - name: Update Exim
+    shell: '/usr/sbin/update-exim4.conf > /var/log/exim-updated.log'
+    args:
+      creates: /var/log/exim-updated.log
+  - name: Samba service
+    service: name=samba state=started enabled=yes
+  - name: Samba share for www-data
+    shell: '/bin/echo -ne "www-data\nwww-data\n" | smbpasswd -a -s www-data >> /var/log/smbpasswd.log'
+    args:
+      creates: /var/log/smbpasswd.log
+  - name: Samba config file
+    copy:
+      src: files/smb.conf
+      dest: /etc/samba/smb.conf
+      owner: root
+      group: root
+      mode: 0644
+    notify: restart samba
   handlers:
   - name: Restart apache
     service: name=apache2 state=restarted
