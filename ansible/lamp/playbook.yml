@@ -50,6 +50,26 @@
       state: directory
       owner: www-data
       group: www-data
+  - name: Html folder
+    file:
+      path: /var/www/html/conf.d
+      state: directory
+      owner: www-data
+      group: www-data
+  - name: Enable virtual hosts
+    copy:
+      src: files/apache.conf
+      dest: /etc/apache2/conf-enabled/apache.conf
+      owner: root
+      group: root
+      mode: 0644
+  - name: Virtual host example
+    copy:
+      src: files/example.com.conf
+      dest: /var/www/html/conf.d/example.com.conf
+      owner: www-data
+      group: www-data
+      mode: 0754
   - name: Ensure apache is running
     service: name=apache2 state=started enabled=yes
   - name: Install php
@@ -100,8 +120,8 @@
     shell: '/usr/sbin/update-exim4.conf > /var/log/exim-updated.log'
     args:
       creates: /var/log/exim-updated.log
-  - name: Samba service
-    service: name=samba state=started enabled=yes
+#  - name: Samba service
+#    service: name=samba state=started enabled=yes
   - name: Samba share for www-data
     shell: '/bin/echo -ne "www-data\nwww-data\n" | smbpasswd -a -s www-data >> /var/log/smbpasswd.log'
     args:
@@ -113,7 +133,6 @@
       owner: root
       group: root
       mode: 0644
-    notify: restart samba
   handlers:
   - name: Restart apache
     service: name=apache2 state=restarted
