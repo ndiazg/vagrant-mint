@@ -106,6 +106,7 @@
       - php-pear
       - php-xdebug
       - php-xmlrpc
+      - libapache2-mod-php7.0
   - name: Install composer
     shell: '/usr/bin/curl -sS https://getcomposer.org/installer | HOME=/var/www php -- --install-dir=/usr/bin --filename=composer'
     args:
