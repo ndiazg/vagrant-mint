@@ -8,6 +8,16 @@
       dest: /etc/sudoers
       regexp: '^%sudo'
       line: '%sudo   ALL=(ALL) NOPASSWD: ALL'
+  - name: Legacy SSH client Kex
+    lineinfile: 
+      dest: /etc/ssh/sshd_config
+      line: 'KexAlgorithms diffie-hellman-group-exchange-sha256,diffie-hellman-group1-sha1'
+  - name: Legacy SSH client Ciphers
+    lineinfile: 
+      dest: /etc/ssh/sshd_config
+      line: 'Ciphers aes128-cbc'
+  - name: Install apache
+    apt: name=apache2 state=latest
   - name: Install misc dev tools
     apt: name={{ item }} state=present
     with_items:
@@ -31,8 +41,6 @@
       - exim4-base
       - ruby
       - ruby-dev
-  - name: Install apache
-    apt: name=apache2 state=latest
   - name: Configure apache user
     user:
       name: www-data
@@ -53,6 +61,12 @@
       owner: www-data
       group: www-data
   - name: Html folder
+    file:
+      path: /var/www/html
+      state: directory
+      owner: www-data
+      group: www-data
+  - name: Conf.d folder
     file:
       path: /var/www/html/conf.d
       state: directory
