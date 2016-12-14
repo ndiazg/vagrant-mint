@@ -118,7 +118,7 @@
   - name: Install mysql workbench
     apt: name=mysql-workbench state=latest
   - name: Install Sublime 3
-    shell: '/usr/bin/wget https://download.sublimetext.com/sublime-text_build-3126_amd64.deb && mv sublime-* sublime.deb && /usr/bin/dpkg -i sublime.deb
+    shell: '/usr/bin/wget https://download.sublimetext.com/sublime-text_build-3126_amd64.deb && mv sublime-* sublime.deb && /usr/bin/dpkg -i sublime.deb'
     args:
       chdir: /usr/src
       creates: /usr/src/sublime.deb
