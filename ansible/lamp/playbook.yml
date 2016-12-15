@@ -36,6 +36,7 @@
       - libxml2-dev
       - libbz2-dev
       - telnet
+      - libmagickwand-dev
       - imagemagick
       - samba
       - exim4-base
@@ -111,6 +112,14 @@
     shell: '/usr/bin/curl -sS https://getcomposer.org/installer | HOME=/var/www php -- --install-dir=/usr/bin --filename=composer'
     args:
       creates: /usr/bin/composer
+  - name: Install HTTP_Request2
+    shell: '/usr/bin/pear install HTTP_Request2'
+    args:
+      creates: /usr/share/php/HTTP/Request2.php
+  - name: Install Imagick
+    shell: '/usr/bin/pecl install imagick && echo "extension=imagick.so" >  /etc/php/7.0/apache2/conf.d/imagick.ini'
+    args:
+      creates: /etc/php/7.0/apache2/conf.d/imagick.ini
   - name: Install mysql
     apt: name=mysql-server state=latest
   - name: Ensure mysql is running
